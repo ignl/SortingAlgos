@@ -7,14 +7,11 @@ import java.util.concurrent.TimeUnit;
 import org.intelligentjava.algos.sort.Sorter;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
-import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
-import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Warmup;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
@@ -27,7 +24,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
  * @author Ignas Lelys
  * @created Jun 29, 2014
  */
-@OutputTimeUnit(TimeUnit.MICROSECONDS)
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
 @BenchmarkMode(Mode.AverageTime)
 @Warmup(iterations = 3, time = 1)
 @Measurement(iterations = 3, time = 1)
@@ -38,7 +35,7 @@ public class SortingBenchmark {
 
     private Distribution distribution = Distribution.RANDOM;
 
-    private int[] array;
+    private int[] array = distribution.create(length);
     
     int i = 1;
 
@@ -92,50 +89,39 @@ public class SortingBenchmark {
         abstract int[] create(int length);
     }
 
-    @Setup(Level.Iteration)
-    public void setUp() {
-        array = distribution.create(length);
-//        System.out.println("SET UP. NEW ARRAY CREATED.");
-    }
-    
-    @TearDown(Level.Iteration)
-    public void check() {
-        for (int i = 1; i < array.length; i++) {
-            if (array[i-1] > array[i]) {
-                System.out.println("ERROR: NOT SORTED!");
-            }
-        }
-//        System.out.println("TEARDOWN. ARRAY SORTED.");
-    }
-    
     @Benchmark
     public int timeHeapSort() {
-        int[] sorted = Sorter.heapSort(array);
+        int[] copy = Arrays.copyOf(array, array.length);
+        int[] sorted = Sorter.heapSort(copy);
         return sorted[i];
     }
 
     @Benchmark
     public int timeMergeSort() {
-        int[] sorted = Sorter.mergeSort(array);
+        int[] copy = Arrays.copyOf(array, array.length);
+        int[] sorted = Sorter.mergeSort(copy);
         return sorted[i];
     }
 
     @Benchmark
     public int timeQuickSort() {
-        int[] sorted = Sorter.quickSort(array);
+        int[] copy = Arrays.copyOf(array, array.length);
+        int[] sorted = Sorter.quickSort(copy);
         return sorted[i];
     }
 
     @Benchmark
     public int timeInsertionSort() {
-        int[] sorted = Sorter.insertionSort(array);
+        int[] copy = Arrays.copyOf(array, array.length);
+        int[] sorted = Sorter.insertionSort(copy);
         return sorted[i];
     }
 
     @Benchmark
     public int timeJDKSort() {
-        Arrays.sort(array);
-        return array[i];
+        int[] copy = Arrays.copyOf(array, array.length);
+        Arrays.sort(copy);
+        return copy[i];
     }
     
     public static void main(String[] args) throws RunnerException {
