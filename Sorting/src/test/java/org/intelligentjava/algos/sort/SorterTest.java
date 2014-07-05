@@ -12,17 +12,17 @@ import org.junit.Test;
  */
 public class SorterTest {
 
-    // @Test
-    // public void testBucketSortSimple() {
-    // double[] data = { 0.111, 0.652, 0.744, 0.199, 0.222, 0.366, 0.998, 0.145,
-    // 0.133, 0.180, 0.763, 0.163, 0.965, 0.111, 0.512 };
-    // double[] result = Sorter.bucketSort(data);
-    // Assert.assertNotNull(result);
-    // Assert.assertTrue(result.length == 15);
-    // for (int i = 0; i < data.length - 1; i++) {
-    // Assert.assertTrue(result[i] <= result[i + 1]);
-    // }
-    // }
+    @Test
+    public void testBucketSortSimple() {
+        double[] data = { 0.111, 0.652, 0.744, 0.199, 0.222, 0.366, 0.998, 0.145, 0.133, 0.180, 0.763, 0.163, 0.965,
+                0.111, 0.512 };
+        double[] result = Sorter.bucketSort(data);
+        Assert.assertNotNull(result);
+        Assert.assertTrue(result.length == 15);
+        for (int i = 0; i < data.length - 1; i++) {
+            Assert.assertTrue(result[i] <= result[i + 1]);
+        }
+    }
 
     @Test
     public void testRadixSortSimple() {

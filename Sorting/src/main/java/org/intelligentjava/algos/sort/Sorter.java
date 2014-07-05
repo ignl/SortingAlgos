@@ -1,5 +1,7 @@
 package org.intelligentjava.algos.sort;
 
+import java.util.Arrays;
+
 import org.intelligentjava.algos.utils.ArrayUtils;
 import org.intelligentjava.algos.utils.HeapUtils;
 import org.intelligentjava.algos.utils.MathUtils;
@@ -27,9 +29,12 @@ public class Sorter {
         for (int i = 0; i < data.length; i++) {
             int bucketIndex = (int) ((double) numberOfBuckets * data[i]);
             if (buckets[bucketIndex] == null) {
-                buckets[bucketIndex] = new double[10];
+                buckets[bucketIndex] = new double[1];
+            } else {
+                // increase bucket size by 1 (maybe better redo with linked list)
+                double[] bucket = buckets[bucketIndex];
+                buckets[bucketIndex] = Arrays.copyOf(bucket, bucket.length + 1);
             }
-            // TODO check for out of bounds (redo with linked list)
             buckets[bucketIndex][bucketListIndices[i]++] = data[i];
         }
 
@@ -39,7 +44,6 @@ public class Sorter {
         for (int bucketIndex = 0; bucketIndex < numberOfBuckets; bucketIndex++) {
             if (buckets[bucketIndex] != null) {
                 int bucketLength = buckets[bucketIndex].length;
-                System.out.println(nextIndex);
                 System.arraycopy(sortedData, nextIndex, Sorter.insertionSort(buckets[bucketIndex]), 0, bucketLength);
                 nextIndex = nextIndex + bucketLength - 1;
             }
